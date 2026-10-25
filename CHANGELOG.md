@@ -1,3 +1,12 @@
+pool_technologie – Version à venir (numéro à définir par le mainteneur)
+	[Amélioration] Connexion Modbus confiée à l'intégration Modbus de Home Assistant (async_get_unit) : l'intégration n'ouvre plus son propre client pymodbus et ne dépend plus de pymodbus. La liaison est partagée avec les autres intégrations qui joignent la même passerelle par Home Assistant, rouverte d'elle-même à la requête suivante après une coupure (#7), et fermée par Home Assistant au déchargement
+	[Amélioration] Accès à l'électrolyseur regroupé dans une petite bibliothèque intégrée au dépôt (pool_technologie_modbus), construite sur modbus-connection et testée sans matériel. Mêmes registres, mêmes échelles, mêmes plages valides, même découpage des lectures (un registre par requête), même relecture de confirmation après chaque écriture
+	[Amélioration] Un registre lu par deux entités (consigne pH, consigne ORP, taille du bassin) n'est plus lu qu'une fois par cycle
+	[Amélioration] Après 3 cycles ratés d'affilée, les entités passent en indisponible au lieu de garder indéfiniment leur dernière valeur, et reviennent d'elles-mêmes au retour de l'électrolyseur. En deçà, la dernière valeur reste affichée comme avant. Le capteur « État de la communication Modbus » garde son sens et reste lisible pendant la coupure
+	[Amélioration] L'assistant de configuration vérifie que l'électrolyseur répond avant de créer l'entrée, refuse un électrolyseur déjà configuré (même adresse IP, port et adresse Modbus) et signale une passerelle déjà utilisée par Home Assistant avec d'autres paramètres de liaison (traduit en français, anglais et espagnol)
+	[Information] Version minimale de Home Assistant : 2026.10.1. async_get_unit et async_get_temporary_unit existent depuis 2026.9, mais la bibliothèque s'appuie sur la classe Device de modbus-connection (4.12.1, livrée à partir de 2026.10.0), et 2026.10.1 livre modbus-connection 4.12.4, qui rouvre la liaison pour une requête en attente derrière une liaison tombée au lieu de la faire échouer
+	[Information] Aucune migration : mêmes entités, mêmes identifiants, mêmes options. Une installation existante se recharge telle quelle
+
 pool_technologie – Version 261024
 	[Nouveauté] Poolsquad UV confirmé - Ratio électrolyse (2051) (#9, merci @pierrebaridon63)
 	[Nouveauté] Poolsquad UV confirmé - Ratio UV (2050) (#9, merci @pierrebaridon63)
